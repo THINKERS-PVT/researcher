@@ -1,0 +1,19 @@
+{  
+  "name": "id-tester",  
+  "version": "1.0.0",  
+  "description": "User id creator Test",  
+  "type": "module",  
+  "main": "app.js",  
+  "scripts": {  
+    "dev": "nodemon app.js"  
+  },  
+  "devDependencies": {  
+    "nodemon": "^2.0.22"  
+  },  
+  "dependencies": {  
+    "express": "^4.17.1",  
+    "nanoid": "^5.0.3",  
+    "ulid": "^2.3.0",  
+    "uuid": "^9.0.1"  
+  }  
+}  
