@@ -4,12 +4,18 @@ import { v4 as uuidv4 } from 'uuid';
 import { ulid } from 'ulid';  
 import { nanoid } from 'nanoid';  
 import os from 'os';  
+import ejs from 'ejs';
+
 
   
 const port = 3030;  
   
 // Set up express app  
 const app = express();  
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views'));
+const landingEjsPath = path.join(__dirname, '../views/landingpage.ejs');
+app.use(express.static(path.join(__dirname, '../public')));
   
 // Function to generate and display ULID, UUID, nanoid, Snowflake, Flake ID, and Twitter Snowflake  
 function gener(req, res) {  
@@ -43,7 +49,12 @@ function gener(req, res) {
   res.send(ids);  
 }  
   
-app.all('*', gener);  
+app.all('/id', gener);  
+
+    app.all('*', (req, res) => {
+ res.render(landingEjsPath);
+   });
+
   
 // // Get the LAN IP address  
 // const interfaces = os.networkInterfaces();  
