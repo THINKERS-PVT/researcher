@@ -1,76 +1,41 @@
-// Import required packages  
-import express from 'express';  
-import { v4 as uuidv4 } from 'uuid';  
-import { ulid } from 'ulid';  
-import { nanoid } from 'nanoid';  
-import os from 'os';  
-import ejs from 'ejs';
-import path from 'path';
+import express from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { ulid } from 'ulid';
+import { nanoid } from 'nanoid';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
+const port = 3030;
 
-  
-const port = 3030;  
-  
-// Set up express app  
-const app = express();  
+const app = express();
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '../views'));
-const landingEjsPath = path.join(__dirname, '../views/landingpage.ejs');
-app.use(express.static(path.join(__dirname, '../public')));
-  
-// Function to generate and display ULID, UUID, nanoid, Snowflake, Flake ID, and Twitter Snowflake  
-function gener(req, res) {  
-  // Generate a ULID  
-  const ulId = ulid();  
-  
-  // Generate a UUID  
-  const uuidValue = uuidv4();  
-  
-  // Generate a nanoid  
-  const nanoidValue = nanoid();  
-  
-  // Generate a Snowflake ID  
-  // const snowflake = new Snowflake();  
-  // const snowflakeValue = snowflake.generate();  
-  
-  // Generate a Flake ID  
-  // const flakeIdGen = new FlakeIdGen();  
-  // const flakeIdValue = flakeIdGen.next();  
-  
-  // Generate a Twitter Snowflake ID  
-  // const twitterSnowflake = new TwitterSnowflake();  
-  // const twitterSnowflakeValue = twitterSnowflake.generate();  
-  let ids ={  
-    ulid: ulId,  
-    uuid: uuidValue,  
+app.set('views', join(__dirname, '../views'));
+const landingEjsPath = join(__dirname, '../views/landingpage.ejs');
+app.use(express.static(join(__dirname, '../public')));
+
+function gener(req, res) {
+  const ulId = ulid();
+  const uuidValue = uuidv4();
+  const nanoidValue = nanoid();
+
+  let ids = {
+    ulid: ulId,
+    uuid: uuidValue,
     nanoid: nanoidValue
   };
-  
-  // Send the response with ULID, UUID, nanoid, Snowflake, Flake ID, and Twitter Snowflake  
-  res.send(ids);  
-}  
-  
-app.all('/id', gener);  
 
-    app.all('*', (req, res) => {
- res.render(landingEjsPath);
-   });
+  res.send(ids);
+}
 
-  
-// // Get the LAN IP address  
-// const interfaces = os.networkInterfaces();  
-// let ipAddress = 'localhost'; // Default to localhost if the IP address cannot be determined  
-// for (const networkInterface of Object.values(interfaces)) {  
-//   for (const network of networkInterface) {  
-//     if (network.family === 'IPv4' && !network.internal) {  
-//       ipAddress = network.address;  
-//       break;  
-//     }  
-//   }  
-// }  
-  
-// Start the express server  
-app.listen(port, () => {  
-  console.log(`Server started on localhost:${port}`);  
-});  
+app.all('/id', gener);
+
+app.all('*', (req, res) => {
+  res.render(landingEjsPath);
+});
+
+app.listen(port, () => {
+  console.log(`Server started on localhost:${port}`);
+});
